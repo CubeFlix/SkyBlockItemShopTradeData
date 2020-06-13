@@ -23,6 +23,9 @@ Run the script. You should see an output like this:
 
 ![Output](images/output.PNG)
 
+
+To gather data, import the correct data gathering script, and run one of the functions within it.
+
 Dependencies
 ============
 
