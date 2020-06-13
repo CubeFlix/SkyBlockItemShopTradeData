@@ -7,7 +7,7 @@
 import requests
 import json
 
-#todo: update repo with readme, port to html with item shop values, make video
+#todo: port to html with item shop values, make video
 
 apiKey = 'b8ec178c-b211-48ea-be2f-7191e988efb7' # Your api key. Enter /api new on mc.hypixel.net.
 
