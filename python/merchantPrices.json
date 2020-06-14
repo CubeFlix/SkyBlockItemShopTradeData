@@ -12,7 +12,7 @@
 "COAL" : {"price" : 4, "merchantName" : "Mine Merchant"},
 "IRON_INGOT" : {"price" : 5.5, "merchantName" : "Mine Merchant"},
 "GOLD_INGOT" : {"price" : 6, "merchantName" : "Mine Merchant"},
-"GRAVEL" : {"price" : 6, "merchantName" : "Mine Merchant", "WARNING" : "DO NOT BUY"},
+"GRAVEL" : {"price" : 6, "merchantName" : "Mine Merchant"},
 "COBBLESTONE" : {"price" : 3, "merchantName" : "Mine Merchant"},
 "QUARTZ" : {"price" : 32, "merchantName" : "Builder"},
 "ROTTEN_FLESH" : {"price" : 8, "merchantName" : "Adventurer"},

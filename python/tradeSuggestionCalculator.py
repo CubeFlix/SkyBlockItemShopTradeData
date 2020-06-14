@@ -11,7 +11,7 @@ import json
 
 apiKey = 'b8ec178c-b211-48ea-be2f-7191e988efb7' # Your api key. Enter /api new on mc.hypixel.net.
 
-merchantPrices = json.loads(open('merchantPrices.json', 'r').read())
+merchantPrices = json.loads(open('merchantPricesForBazaar.json', 'r').read())
 idExceptions = json.loads(open('itemNameExceptions.json', mode='r').read())
 
 
