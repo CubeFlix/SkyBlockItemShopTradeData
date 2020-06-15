@@ -15,11 +15,17 @@ Skyblock has item shops and a bazaar, which have differences in price. You can t
 Instructions: 
 ============
 
+To use website:
+
+Open the html file im /html/
+
+To use scripts:
+
 Download the script.
 
 Install Python.
 
-Run the script. You should see an output like this:
+Run the script /python/tradeSuggestionCalculator.py. You should see an output like this:
 
 ![Output](images/output.PNG)
 
