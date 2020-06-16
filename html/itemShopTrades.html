@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>Bazaar Prices</title>
+<title>Item Shop - Bazaar Trades</title>
 <meta charset="UTF-8">
 <link rel="icon" href="img/diamondIcon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,8 +26,8 @@ body{height:100%;
 <!-- Top menu -->
 
   <div class="w3-transparent w3-xlarge" style="max-width:1200px;margin:auto">
-    <div class="w3-center w3-padding-16" style="font-size: 50px; color: white">Bazaar Prices</div>
-	<div class="w3-center" style="color:white">A list of all items at the bazaar.</div>
+    <div class="w3-center w3-padding-16" style="font-size: 50px; color: white">Item Shop - Bazaar Trades</div>
+	<div class="w3-center" style="color:white">A quick tool to find good trades between the item shops and the bazaar.</div>
   </div>
   
 <!-- !PAGE CONTENT! -->
@@ -48,8 +48,9 @@ width: 100%;height: 75%;
   <tr>
     <th>Item</th>
 	<th>Icon</th>
-    <th>Buy Price</th>
-	<th>Sell Price</th>
+    <th>Item Shop Price</th>
+	<th>Bazaar Sell Price</th>
+	<th>Profit</th>
   </tr>
 </table>
 </div>
@@ -57,7 +58,44 @@ width: 100%;height: 75%;
 
 <script>
 
+function sortTable() {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("ItemTable");
+  switching = true;
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[3];
+      y = rows[i + 1].getElementsByTagName("TD")[3];
+      //check if the two rows should switch place:
+      if (Number(x.innerHTML) > Number(y.innerHTML)) {
+        //if so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+}
+
 var nameExceptions = {};
+var bazaarData = {};
+var forbiddenItems = ["ENCHANTED_CARROT_ON_A_STICK"]
 
 String.prototype.toProperCase = function () {
     return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
@@ -68,38 +106,38 @@ $.getJSON("itemNameExceptions.json", function(json) {
 });
 
 $.getJSON("https://api.hypixel.net/skyblock/bazaar?key=b8ec178c-b211-48ea-be2f-7191e988efb7", function(json) {
-    for (var key in json['products']){
-		if (key == "ENCHANTED_CARROT_ON_A_STICK" || key == "SULPHUR"){
-			continue
-		}
+	bazaarData = json['products'];
+	$.getJSON("merchantPricesForBazaar.json", function(json) {
+    for (var key in json){
   		var table = document.getElementById("ItemTable");
   		var row = table.insertRow(-1);
   		var cell1 = row.insertCell(0);
   		var cell2 = row.insertCell(1);
 		var cell3 = row.insertCell(2);
 		var cell4 = row.insertCell(3);
-		var buyprice = json['products'][key]['quick_status']['buyPrice'];
-		var sellPrice = json['products'][key]['quick_status']['sellPrice'];
+		var cell5 = row.insertCell(4);
+		var price = json[key]['price'];
+		cell4.innerHTML = bazaarData[key]['quick_status']['sellPrice'] + " coins"
+		cell5.innerHTML = bazaarData[key]['quick_status']['sellPrice'] - price + " coins"
+		
 		if (key in nameExceptions){
 			
 			key = nameExceptions[key].replace(" ", "_").toUpperCase();
 		}
-		cell2.innerHTML = "<img src=img/icons/" + key.split(' ').join('_') + ".png style=\"width:50px;height:50px;\"></img>"
-  		cell1.innerHTML = key.split('_').join(' ').toProperCase().replace(':', ' ');
+		cell2.innerHTML = "<img src=img/icons/" + key + ".png style=\"width:50px;height:50px;\"></img>"
+  		cell1.innerHTML = key.split('_').join(' ').toProperCase();
 		try {
-  			cell3.innerHTML = buyprice.toString().split('.')[0] + '.' + price.toString().split('.')[1].slice(0, 2) + " coins";
+  			cell3.innerHTML = price.toString().split('.')[0] + '.' + price.toString().split('.')[1].slice(0, 2) + " coins";
 		}
 		catch {
-			cell3.innerHTML = buyprice + " coins"
+			cell3.innerHTML = price + " coins"
 		}
-		try {
-  			cell4.innerHTML = sellPrice.toString().split('.')[0] + '.' + price.toString().split('.')[1].slice(0, 2) + " coins";
-		}
-		catch {
-			cell4.innerHTML = sellPrice + " coins"
-		}
+		sortTable();
 }
 });
+});
+
+
 
 </script>
   
