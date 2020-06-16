@@ -26,7 +26,8 @@ body{height:100%;
 <!-- Top menu -->
 
   <div class="w3-transparent w3-xlarge" style="max-width:1200px;margin:auto">
-    <div class="w3-center w3-padding-16" style="font-size: 40px; color: white">Item Shop Prices</div>
+    <div class="w3-center w3-padding-16" style="font-size: 50px; color: white">Item Shop Prices</div>
+	<div class="w3-center" style="color:white">A list of all items at the item shops, excluding tools and weapons.</div>
   </div>
   
 <!-- !PAGE CONTENT! -->
@@ -74,10 +75,11 @@ $.getJSON("merchantPrices.json", function(json) {
 		var cell3 = row.insertCell(2);
 		var price = json[key]['price'];
 		if (key in nameExceptions){
-			key = nameExceptions[key];
+			
+			key = nameExceptions[key].replace(" ", "_").toUpperCase();
 		}
-		cell2.innerHTML = "<img src=\"" + key + ".png\"></img>"
-  		cell1.innerHTML = key.replace('_', ' ').toProperCase();
+		cell2.innerHTML = "<img src=img/icons/" + key + ".png style=\"width:50px;height:50px;\"></img>"
+  		cell1.innerHTML = key.split('_').join(' ').toProperCase();
 		try {
   			cell3.innerHTML = price.toString().split('.')[0] + '.' + price.toString().split('.')[1].slice(0, 2) + " coins";
 		}

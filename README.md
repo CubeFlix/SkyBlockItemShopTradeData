@@ -19,6 +19,8 @@ To use website:
 
 Open the html file im /html/
 
+(also includes nice web scraper for gathering item images off skyblock's wiki)
+
 To use scripts:
 
 Download the script.

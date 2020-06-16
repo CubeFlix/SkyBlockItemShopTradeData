@@ -24,18 +24,18 @@ body{height:100%;
 </style>
 <body>
 <!-- Top menu -->
-<div class="w3-top">
+
   <div class="w3-transparent w3-xlarge" style="max-width:1200px;margin:auto">
-    <div class="w3-center w3-padding-16" style="font-size: 40px; color: white">Bazaar Prices</div>
+    <div class="w3-center w3-padding-16" style="font-size: 50px; color: white">Bazaar Prices</div>
+	<div class="w3-center" style="color:white">A list of all items at the bazaar.</div>
   </div>
-</div>
   
 <!-- !PAGE CONTENT! -->
 
 <div class="w3-main w3-content w3-padding maincontent" style="max-width:1200px;margin-top:100px">
   <div class="w3-center">
   <div style=" opacity: 0.95;padding: 100px; 
-width: 75%;height: 75%;
+width: 100%;height: 75%;
     margin: auto;
     background-color:white;
     border: 1px outset white;
@@ -44,21 +44,12 @@ width: 75%;height: 75%;
     -moz-box-shadow: 0px 0px 50px 0px rgba(0,0,0,1);
     box-shadow: 0px 0px 50px 0px rgba(0,0,0,1);">
 	
-  <table style="border:1px solid black;margin-left:auto;margin-right:auto;width:500px;table-layout: fixed">
+  <table id="ItemTable" style="border:1px solid black;margin-left:auto;margin-right:auto;width:98%;height:98%;table-layout: fixed">
   <tr>
     <th>Item</th>
+	<th>Icon</th>
     <th>Buy Price</th>
-    <th>Sell Price</th>
-  </tr>
-  <tr>
-    <td>Diamond</td>
-    <td>10.65</td>
-    <td>8.4</td>
-  </tr>
-  <tr>
-    <td>Eve</td>
-    <td>Jackson</td>
-    <td>94</td>
+	<th>Sell Price</th>
   </tr>
 </table>
 </div>
@@ -66,6 +57,48 @@ width: 75%;height: 75%;
 
 <script>
 
+var nameExceptions = {};
+
+String.prototype.toProperCase = function () {
+    return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+};
+
+$.getJSON("itemNameExceptions.json", function(json) {
+	nameExceptions = json;
+});
+
+$.getJSON("https://api.hypixel.net/skyblock/bazaar?key=b8ec178c-b211-48ea-be2f-7191e988efb7", function(json) {
+    for (var key in json['products']){
+	
+  		var table = document.getElementById("ItemTable");
+  		var row = table.insertRow(-1);
+  		var cell1 = row.insertCell(0);
+  		var cell2 = row.insertCell(1);
+		var cell3 = row.insertCell(2);
+		var cell4 = row.insertCell(3);
+		var buyprice = json['products'][key]['quick_status']['buyPrice'];
+		var sellPrice = json['products'][key]['quick_status']['sellPrice'];
+		if (key in nameExceptions){
+			
+			key = nameExceptions[key].replace(" ", "_").toUpperCase();
+		}
+		cell2.innerHTML = "<img src=img/icons/" + key + ".png style=\"width:50px;height:50px;\"></img>"
+  		cell1.innerHTML = key.split('_').join(' ').toProperCase();
+		try {
+			console.log(price.toString().split('.')[1].slice(0, 2));
+  			cell3.innerHTML = buyprice.toString().split('.')[0] + '.' + price.toString().split('.')[1].slice(0, 2) + " coins";
+		}
+		catch {
+			cell3.innerHTML = buyprice + " coins"
+		}
+		try {
+  			cell4.innerHTML = sellPrice.toString().split('.')[0] + '.' + price.toString().split('.')[1].slice(0, 2) + " coins";
+		}
+		catch {
+			cell4.innerHTML = sellPrice + " coins"
+		}
+}
+});
 
 </script>
   
